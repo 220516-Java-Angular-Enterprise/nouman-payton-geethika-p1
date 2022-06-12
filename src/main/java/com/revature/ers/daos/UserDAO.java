@@ -113,6 +113,29 @@ public class UserDAO implements CrudDAO<User>{
 
     @Override
     public List<User> getAll() {
-        return null;
+
+        List<User> users = new ArrayList<>();
+        //This will not work with the current database schema, because it does not have a surname column (as of 06/05)
+        try (Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM ers_users");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setUser_id(rs.getString("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("PASSWORD"));
+                user.setGiven_name(rs.getString("given_name"));
+                user.setSurname(rs.getString("surname"));
+                user.setIs_active(rs.getBoolean("is_active"));
+                user.setRole_id(rs.getString("role_id"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            //Need to create a custom sql exception throw to UserService. UserService should handle error logging.
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return users;
     }
 }
