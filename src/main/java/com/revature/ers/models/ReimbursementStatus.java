@@ -1,2 +1,4 @@
-package com.revature.ers.models;public class ReimbursementStatus {
+package com.revature.ers.models;
+
+public class ReimbursementStatus {
 }
