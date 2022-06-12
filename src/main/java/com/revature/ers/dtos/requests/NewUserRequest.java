@@ -9,7 +9,7 @@ public class NewUserRequest {
     private String given_name;
     private String surname;
     private final boolean is_active  = false;
-    private String role;
+    private final String role = "DEFAULT";
 
     public NewUserRequest(){
         super();
@@ -26,7 +26,6 @@ public class NewUserRequest {
         this.email = email;
         this.given_name = given_name;
         this.surname = surname;
-        this.role = role;
     }
 
     public String getUsername() {
@@ -75,10 +74,6 @@ public class NewUserRequest {
 
     public String getRole() {
         return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public User extractUser(){

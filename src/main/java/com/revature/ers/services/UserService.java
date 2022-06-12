@@ -4,11 +4,13 @@ import com.revature.ers.daos.UserDAO;
 import com.revature.ers.dtos.requests.LoginRequest;
 import com.revature.ers.dtos.requests.NewUserRequest;
 import com.revature.ers.models.User;
+import com.revature.ers.models.UserRoles;
 import com.revature.ers.util.annotations.Inject;
 import com.revature.ers.util.custom_exceptions.AuthenticationException;
 import com.revature.ers.util.custom_exceptions.InvalidRequestException;
 import com.revature.ers.util.custom_exceptions.ResourceConflictException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class UserService{
@@ -54,6 +56,10 @@ public class UserService{
 
     private boolean isValidPassword(String password) {
         return password.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
+    }
+
+    public List<User> getAllUsers(){
+        return userDAO.getAll();
     }
 
 

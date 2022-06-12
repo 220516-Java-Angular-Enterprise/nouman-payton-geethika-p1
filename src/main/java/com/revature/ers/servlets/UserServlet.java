@@ -2,6 +2,7 @@ package com.revature.ers.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.dtos.requests.NewUserRequest;
+import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
 import com.revature.ers.services.TokenService;
 import com.revature.ers.services.UserService;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class UserServlet extends HttpServlet {
 
@@ -50,6 +52,18 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().write("<h1>It works finally</h1>");
+        Principal requester = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+
+        if(requester ==null){
+            resp.setStatus(401);
+        }
+        if(!requester.getRole().equals("ADMIN")){
+            resp.setStatus(403);
+            return;
+        }
+
+        List<User> users = userService.getAllUsers();
+        resp.setContentType("application/json");
+        resp.getWriter().write(mapper.writeValueAsString(users));
     }
 }
