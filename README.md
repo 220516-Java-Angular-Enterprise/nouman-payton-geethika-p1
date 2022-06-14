@@ -38,17 +38,17 @@ Reimbursements are to be one of the following types:
 
 ### Functional Requirements
 
-- An new employee or new finance manager can request registration with the system
+- An new employee or new finance manager can request registration with the system PUT -G
 - ~An admin user can approve or deny new registration requests~
-- The system will register the user's information for payment processing
+- The system will register the user's information for payment processing PUT -G
 - ~A registered employee can authenticate with the system by providing valid credentials~
-- An authenticated employee can view and manage their pending reimbursement requests
-- An authenticated employee can view their reimbursement request history (sortable and filterable)
+- An authenticated employee can view and manage their pending reimbursement requests GET -payton
+- An authenticated employee can view their reimbursement request history (sortable and filterable) GET -payton
 - ~An authenticated employee can submit a new reimbursement request~
-- An authenticated finance manager can view a list of all pending reimbursement requests
-- An authenticated finance manager can view a history of requests that they have approved/denied
-- An authenticated finance manager can approve/deny reimbursement requests
-- The system will send a payment request when a reimbursement request is approved
+- An authenticated finance manager can view a list of all pending reimbursement requests GET - payton
+- An authenticated finance manager can view a history of requests that they have approved/denied GET - payton
+- An authenticated finance manager can approve/deny reimbursement requests - PUT - G
+- The system will send a payment request when a reimbursement request is approved - PUT -G
 - ~An admin user can deactivate user accounts, making them unable to log into the system~
 - ~An admin user can reset a registered user's password~
 
