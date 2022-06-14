@@ -3,11 +3,13 @@ package com.revature.ers.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.dtos.requests.LoginRequest;
 import com.revature.ers.dtos.responses.Principal;
+import com.revature.ers.models.UserRoles;
 import com.revature.ers.services.TokenService;
 import com.revature.ers.services.UserService;
 import com.revature.ers.util.annotations.Inject;
 import com.revature.ers.util.custom_exceptions.AuthenticationException;
 import com.revature.ers.util.custom_exceptions.InvalidRequestException;
+import com.revature.ers.util.custom_exceptions.NotAuthorizedException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +36,7 @@ public class AuthServlet extends HttpServlet {
             LoginRequest request = mapper.readValue(req.getInputStream(), LoginRequest.class);
             Principal principal = new Principal(userService.login(request));
 
+
             /* Stateful session management. */
             String token = tokenService.generateToken(principal);
             resp.setHeader("Authorization", token);
@@ -43,7 +46,10 @@ public class AuthServlet extends HttpServlet {
             resp.setStatus(404);
         } catch (AuthenticationException e) {
             resp.setStatus(401);
-        } catch (Exception e) {
+        } catch (NotAuthorizedException e){
+            resp.setStatus(403);
+        }
+        catch (Exception e) {
             e.printStackTrace();
             resp.setStatus(500);
         }

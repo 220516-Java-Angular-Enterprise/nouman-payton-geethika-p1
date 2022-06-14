@@ -1,7 +1,10 @@
 package com.revature.ers.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ers.dtos.requests.ApproveNewUser;
 import com.revature.ers.dtos.requests.NewUserRequest;
+import com.revature.ers.dtos.requests.RejectUser;
+import com.revature.ers.dtos.requests.ResetUserPassword;
 import com.revature.ers.dtos.responses.Principal;
 import com.revature.ers.models.User;
 import com.revature.ers.services.TokenService;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class UserServlet extends HttpServlet {
 
@@ -56,6 +60,7 @@ public class UserServlet extends HttpServlet {
 
         if(requester ==null){
             resp.setStatus(401);
+            return;
         }
         if(!requester.getRole().equals("ADMIN")){
             resp.setStatus(403);
@@ -66,4 +71,57 @@ public class UserServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.getWriter().write(mapper.writeValueAsString(users));
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Principal requester = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+
+
+        if(requester == null){
+            resp.setContentType("application/html");
+            resp.getWriter().write("<h1>403</h1>");
+            resp.getWriter().write("<h1>Access Denied you are not allowed to see this page</h1>");
+            resp.setStatus(403);
+            return;
+        }
+
+        if (!requester.getRole().equals("ADMIN")){
+            resp.getWriter().write("<h1>Access Denied");
+            resp.setStatus(403);
+            return;
+        }
+
+        String[] uris = req.getRequestURI().split("/");
+
+        if(uris.length >= 4 && uris[3].equals("approve")){
+            ApproveNewUser request = mapper.readValue(req.getInputStream(), ApproveNewUser.class);
+            userService.approveUser(request);
+            resp.setContentType("application/html");
+            resp.setStatus(202);
+        }
+
+        if(uris.length >= 4 && uris[3].equals("reject")){
+            RejectUser request = mapper.readValue(req.getInputStream(), RejectUser.class);
+            userService.reject(request);
+
+            resp.setContentType("application/html");
+            resp.getWriter().write("<h2>" + request.getUsername() + "has been rejected </h2>");
+            resp.setStatus(202);
+
+        }
+
+        if(uris.length >= 4 && uris[3].equals("reset")){
+
+            ResetUserPassword request = mapper.readValue(req.getInputStream(), ResetUserPassword.class);
+
+            String password = String.valueOf(userService.randomPassword());
+            userService.changePass(request, password );
+            resp.setContentType("application/html");
+            resp.getWriter().write("<h2> Username new password is:" + password + "</h2>");
+            resp.setStatus(202);
+        }
+
+
+    }
+
 }

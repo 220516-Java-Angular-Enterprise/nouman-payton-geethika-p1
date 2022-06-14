@@ -8,8 +8,8 @@ public class NewUserRequest {
     private String email;
     private String given_name;
     private String surname;
-    private final boolean is_active  = false;
-    private final String role = "DEFAULT";
+    private boolean isActive;
+    private String role;
 
     public NewUserRequest(){
         super();
@@ -26,6 +26,7 @@ public class NewUserRequest {
         this.email = email;
         this.given_name = given_name;
         this.surname = surname;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -69,11 +70,23 @@ public class NewUserRequest {
     }
 
     public boolean isIs_active() {
-        return is_active;
+        return isActive;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public String getRole() {
         return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public User extractUser(){
@@ -81,7 +94,7 @@ public class NewUserRequest {
         newUser.setPassword(this.password);
         newUser.setEmail(this.email);
         newUser.setGiven_name(this.given_name);
-        newUser.setIs_active(this.is_active);
+        newUser.setActive(this.isActive);
         newUser.setSurname(this.surname);
         return newUser;
     }}

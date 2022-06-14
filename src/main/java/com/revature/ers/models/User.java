@@ -7,23 +7,26 @@ public class User {
     private String password;
     private String given_name;
     private String surname;
-    private boolean is_active;
+
+    private boolean isActive;
     private String role_id;
+
 
     public User(){
 
     }
 
-    public User(String user_id, String username, String email, String password, String given_name, String surname, boolean is_active, String role_id) {
+    public User(String user_id, String username, String email, String password, String given_name, String surname, boolean isActive, String role_id) {
         this.user_id = user_id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.given_name = given_name;
         this.surname = surname;
-        this.is_active = is_active;
+        this.isActive = isActive;
         this.role_id = role_id;
     }
+
     public User(String user_id, String username, String email, String password, String given_name, String surname) {
         this.user_id = user_id;
         this.username = username;
@@ -87,12 +90,12 @@ public class User {
         this.surname = surname;
     }
 
-    public boolean isIs_active() {
-        return is_active;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setIs_active(boolean is_active) {
-        this.is_active = is_active;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public String getRole_id() {
@@ -105,14 +108,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "Users{" +
+        return "User{" +
                 "user_id='" + user_id + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", given_name='" + given_name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", is_active=" + is_active +
+                ", isActive=" + isActive +
                 ", role_id='" + role_id + '\'' +
                 '}';
     }
