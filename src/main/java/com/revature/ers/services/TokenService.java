@@ -7,8 +7,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 
+import javax.swing.*;
 import java.util.Date;
-
 public class TokenService {
 
     @Inject
@@ -36,6 +36,7 @@ public class TokenService {
         return tokenBuilder.compact();
     }
     public Principal extractRequesterDetails(String token) {
+
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(jwtConfig.getSigningKey())
