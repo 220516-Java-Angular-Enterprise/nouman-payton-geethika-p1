@@ -38,7 +38,7 @@ Reimbursements are to be one of the following types:
 
 ### Functional Requirements
 
-- An new employee or new finance manager can request registration with the system PUT -G
+~- An new employee or new finance manager can request registration with the system~
 - ~An admin user can approve or deny new registration requests~
 - The system will register the user's information for payment processing PUT -G
 - ~A registered employee can authenticate with the system by providing valid credentials~
