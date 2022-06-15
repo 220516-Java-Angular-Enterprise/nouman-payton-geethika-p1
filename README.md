@@ -29,13 +29,13 @@ Reimbursements are to be one of the following types:
 - PostGreSQL (running on Docker)
 
 **Application Tier**
+- Postgres
 - Java 8
 - Apache Maven
 - JDBC
 - Java EE Servlets
 - JSON Web Tokens
 - JUnit
-- Mockito
 
 ### Functional Requirements
 
