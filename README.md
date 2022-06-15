@@ -45,7 +45,7 @@ Reimbursements are to be one of the following types:
 - An authenticated employee can view and manage their pending reimbursement requests GET -payton
 - An authenticated employee can view their reimbursement request history (sortable and filterable) GET -payton
 - ~An authenticated employee can submit a new reimbursement request~
-- An authenticated finance manager can view a list of all pending reimbursement requests GET - payton
+- ~An authenticated finance manager can view a list of all pending reimbursement requests~
 - An authenticated finance manager can view a history of requests that they have approved/denied GET - payton
 - An authenticated finance manager can approve/deny reimbursement requests - PUT - G
 - The system will send a payment request when a reimbursement request is approved - PUT -G
