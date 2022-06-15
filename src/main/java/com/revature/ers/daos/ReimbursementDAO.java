@@ -28,7 +28,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements> {
             ps.setString(10, obj.getType_id());
             ps.executeUpdate();
         } catch (SQLException e){
-            //Need to create a custom sql exception throw to UserService. UserService should handle error logging.
             throw new RuntimeException(e.getMessage());
         }
 
@@ -52,7 +51,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements> {
             ps.setString(10, obj.getType_id());
             ps.executeUpdate();
         } catch (SQLException e){
-            //Need to create a custom sql exception throw to UserService. UserService should handle error logging.
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -66,7 +64,6 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            //Need to create a custom sql exception throw to UserService. UserService should handle error logging.
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -113,10 +110,36 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements> {
                 reimbursements.add(reimburse);
             }
         } catch (SQLException e) {
-            //Need to create a custom sql exception throw to UserService. UserService should handle error logging.
             throw new RuntimeException(e.getMessage());
         }
         return reimbursements;
     }
+
+    public List<Reimbursements> allPending(){
+        List<Reimbursements> reimbursement = new ArrayList<>();
+
+        try(Connection con = ConnectionFactory.getInstance().getConnection()){
+            PreparedStatement ps = con.prepareStatement("SELECT * from ers_reimbursements WHERE status_id = 'pending'");
+            ResultSet rs  = ps.executeQuery();
+            while(rs.next()){
+                Reimbursements reimburse = new Reimbursements(rs.getString("reimb_id"),
+                        rs.getDouble("amount"),
+                        rs.getTimestamp("submitted"),
+                        rs.getTimestamp("resolved"),
+                        rs.getString("description"),
+                        rs.getBlob("receipt"),
+                        rs.getString("payment_id"),
+                        rs.getString("author_id"),
+                        rs.getString("resolver_id"),
+                        rs.getString("status_id"),
+                        rs.getString("type_id"));
+                reimbursement.add(reimburse);
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+        return reimbursement;
+    }
+
 
     }

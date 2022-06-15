@@ -1,5 +1,9 @@
 package com.revature.ers.models;
 
+import com.revature.ers.daos.UserDAO;
+
+import java.util.List;
+
 public class UserRoles {
 
     private String role_id;
@@ -29,4 +33,5 @@ public class UserRoles {
     public void setRole(String role) {
         this.role = role;
     }
+
 }

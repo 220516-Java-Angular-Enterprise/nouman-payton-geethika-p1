@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class ReimbursementServlet  extends HttpServlet {
 
@@ -46,7 +47,7 @@ public class ReimbursementServlet  extends HttpServlet {
 
             if(!requester.getRole().equals("DEFAULT")){
                 resp.setStatus(403);
-                throw new NotAuthorizedException("User is not authorized only default");
+                throw new NotAuthorizedException("User is not authorized");
             }
 
             Reimbursements newReimbursement = reimbursementsServices.register(request, requester.getId());
@@ -57,7 +58,7 @@ public class ReimbursementServlet  extends HttpServlet {
             resp.setStatus(401);
             resp.getWriter().write(e.getMessage());
         } catch (InvalidRequestException e) {
-            resp.setStatus(404); // BAD REQUEST
+            resp.setStatus(404);
             resp.getWriter().write(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,10 +81,10 @@ public class ReimbursementServlet  extends HttpServlet {
 
 
         } catch (InvalidRequestException e) {
-            resp.setStatus(400); // BAD REQUEST
+            resp.setStatus(400);
             resp.getWriter().write(e.getMessage());
         } catch (NotAuthorizedException e) {
-            resp.setStatus(401); // UNAUTHORIZED USER
+            resp.setStatus(401);
             resp.getWriter().write(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,4 +92,25 @@ public class ReimbursementServlet  extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Principal requester = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+
+        if (requester == null) {
+            resp.setStatus(401);
+            return;
+        }
+        if (!requester.getRole().equals("MANAGER")) {
+            resp.setStatus(403);
+            resp.getWriter().write("<h1>You are not authorized</h1>");
+            return;
+        }
+
+        String[] uris = req.getRequestURI().split("/");
+        if(uris.length == 3) {
+            List<Reimbursements> reimbursements = reimbursementsServices.allPending();
+            resp.setContentType("application/json");
+            resp.getWriter().write(mapper.writeValueAsString(reimbursements));
+        }
+    }
 }

@@ -1,3 +1,4 @@
+com\revature\ers\daos\ReimbursementsTypesDAO.class
 com\revature\ers\util\database\ConnectionFactory.class
 com\revature\ers\util\JwtConfig.class
 com\revature\ers\util\custom_exceptions\NotAuthorizedException.class
@@ -5,6 +6,7 @@ com\revature\ers\services\TokenService.class
 com\revature\ers\servlets\UserServlet.class
 com\revature\ers\dtos\requests\NewReimbursementRequest.class
 com\revature\ers\util\ContextLoaderListener.class
+com\revature\ers\dtos\requests\SolveReimbursement.class
 com\revature\ers\models\User.class
 com\revature\ers\util\custom_exceptions\InvalidSQLException.class
 com\revature\ers\daos\UserDAO.class

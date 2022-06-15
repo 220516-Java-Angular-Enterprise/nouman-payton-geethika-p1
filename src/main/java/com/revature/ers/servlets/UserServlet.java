@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 public class UserServlet extends HttpServlet {
 
@@ -41,13 +40,13 @@ public class UserServlet extends HttpServlet {
         try {
             NewUserRequest request = mapper.readValue(req.getInputStream(), NewUserRequest.class);
             User createdUser = userService.register(request);
-            resp.setStatus(201); // CREATED
+            resp.setStatus(201);
             resp.setContentType("application/json");
             resp.getWriter().write(mapper.writeValueAsString(createdUser.getUser_id()));
         } catch (InvalidRequestException e) {
-            resp.setStatus(404); // BAD REQUEST
+            resp.setStatus(404);
         } catch (ResourceConflictException e) {
-            resp.setStatus(409); // RESOURCE CONFLICT
+            resp.setStatus(409);
         } catch (Exception e) {
             e.printStackTrace();
             resp.setStatus(500);
@@ -80,18 +79,28 @@ public class UserServlet extends HttpServlet {
         if(requester == null){
             resp.setContentType("application/html");
             resp.getWriter().write("<h1>403</h1>");
-            resp.getWriter().write("<h1>Access Denied you are not allowed to see this page</h1>");
             resp.setStatus(403);
             return;
         }
 
         if (!requester.getRole().equals("ADMIN")){
-            resp.getWriter().write("<h1>Access Denied");
+            resp.getWriter().write("<h1>Access Denied</h1>");
             resp.setStatus(403);
             return;
         }
 
         String[] uris = req.getRequestURI().split("/");
+
+        if(uris.length >= 4 && uris[3].equals("reset")){
+
+            ResetUserPassword request = mapper.readValue(req.getInputStream(), ResetUserPassword.class);
+
+            String password = String.valueOf(userService.randomPassword());
+            userService.changePass(request, password );
+            resp.setContentType("application/html");
+            resp.getWriter().write("<h2> New password is " + password);
+            resp.setStatus(202);
+        }
 
         if(uris.length >= 4 && uris[3].equals("approve")){
             ApproveNewUser request = mapper.readValue(req.getInputStream(), ApproveNewUser.class);
@@ -105,23 +114,10 @@ public class UserServlet extends HttpServlet {
             userService.reject(request);
 
             resp.setContentType("application/html");
-            resp.getWriter().write("<h2>" + request.getUsername() + "has been rejected </h2>");
+            resp.getWriter().write("<h2>" + request.getUsername() + " account has been deactivated </h2>");
             resp.setStatus(202);
 
         }
-
-        if(uris.length >= 4 && uris[3].equals("reset")){
-
-            ResetUserPassword request = mapper.readValue(req.getInputStream(), ResetUserPassword.class);
-
-            String password = String.valueOf(userService.randomPassword());
-            userService.changePass(request, password );
-            resp.setContentType("application/html");
-            resp.getWriter().write("<h2> Username new password is:" + password + "</h2>");
-            resp.setStatus(202);
-        }
-
-
     }
 
 }

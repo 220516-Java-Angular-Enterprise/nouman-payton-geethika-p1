@@ -1,5 +1,6 @@
 package com.revature.ers.daos;
 
+import com.revature.ers.models.ReimbursementTypes;
 import com.revature.ers.util.database.ConnectionFactory;
 
 import java.sql.Connection;
@@ -8,15 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ReimbursementsTypes implements CrudDAO<ReimbursementsTypes>{
+public class ReimbursementsTypesDAO implements CrudDAO<ReimbursementTypes>{
+
 
     @Override
-    public void save(ReimbursementsTypes obj) {
+    public void save(ReimbursementTypes obj) {
 
     }
 
     @Override
-    public void update(ReimbursementsTypes obj) {
+    public void update(ReimbursementTypes obj) {
 
     }
 
@@ -26,17 +28,13 @@ public class ReimbursementsTypes implements CrudDAO<ReimbursementsTypes>{
     }
 
     @Override
-    public ReimbursementsTypes getById(String id){
-        try(Connection con = ConnectionFactory.getInstance().getConnection()){
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM ers_reimbursement_types");
-            ResultSet rs = ps.executeQuery();
-        } catch(SQLException e){
-            throw new SQLException("Didnt able to get data from database");
-        }
+    public ReimbursementTypes getById(String id) throws SQLException {
+        return null;
     }
 
     @Override
-    public List<ReimbursementsTypes> getAll() {
+    public List<ReimbursementTypes> getAll() {
         return null;
     }
+
 }

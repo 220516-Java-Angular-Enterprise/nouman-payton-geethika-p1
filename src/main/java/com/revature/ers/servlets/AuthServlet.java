@@ -36,8 +36,6 @@ public class AuthServlet extends HttpServlet {
             LoginRequest request = mapper.readValue(req.getInputStream(), LoginRequest.class);
             Principal principal = new Principal(userService.login(request));
 
-
-            /* Stateful session management. */
             String token = tokenService.generateToken(principal);
             resp.setHeader("Authorization", token);
             resp.setContentType("application/json");

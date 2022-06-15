@@ -71,9 +71,8 @@ public class UserService{
     }
 
     public void approveUser(ApproveNewUser user){
-        userDAO.userIsActive(user.extractUser());
+        userDAO.setIsActive(user.extractUser());
     }
-
     public void reject(RejectUser user) {
         userDAO.reject(user.extractUser());
     }
